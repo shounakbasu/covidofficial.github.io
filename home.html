@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>COVID 19</title>
+    <link
+      rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    />
+  </head>
+  <body onload="fetch()">
+    <div class="container">
+      <div class="logo">
+        rG
+      </div>
+      <h1 class="text-center mt-5">Covid 19 Live Data in Table</h1>
+      <h3 class="text-left mt-2">World Statistics</h3>
+      <table class="table table-hover">
+>         <thead>
+              <tr>
+                <th>Total Cases</th>
+                <th>Total Deaths</th>
+                <th>Total Recovered</th>
+              </tr>
+          </thead>
+          <body>
+            <tr id="data">
+            </tr>
+          </body>
+          <br>
+      <table>
+        <br>
+      <table class="table table-stripped table-bordered text-center " id="tval">
+        <tr>
+                <th>Country</th>
+                <th>Total Cases</th>
+                <th>Total Deaths</th>
+                <th>Total Recovered</th>
+      </tr>
+      </table>
+    </div>
+  </body>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script>
+
+  $(document).ready(function(){
+    init()
+
+
+    function init(){
+      var url = "https://api.covid19api.com/summary"
+
+      var data = ''
+
+      $.get(url,function(data){
+        console.log(data.Global);
+        
+        data = `
+        
+        <td>${data.Global.TotalConfirmed}</td>
+        <td>${data.Global.TotalDeaths}</td>
+        <td>${data.Global.TotalRecovered}</td>
+        `
+
+        $("#data").html(data)
+      })
+    }
+  
+ 
+
+  })
+  
+
+  function fetch(){
+      $.get("https://api.covid19api.com/summary" ,
+      
+          function(data){
+              
+            //console.log(data['Countries'].length)
+
+            var tval=document.getElementById('tval');
+
+            for(var i=1; i<(data['Countries'].length); i++){
+                var x = tval.insertRow();
+                x.insertCell(0);
+                tval.rows[i].cells[0].innerHTML = data['Countries'][i-1]['Country'];
+                tval.rows[i].cells[0].style.background = '#8B008B';
+                tval.rows[i].cells[0].style.color = '#fff';
+
+                x.insertCell(1);
+                tval.rows[i].cells[1].innerHTML = data['Countries'][i-1]['TotalConfirmed'];
+                tval.rows[i].cells[1].style.background = '#4bb7b8';
+                tval.rows[i].cells[1].style.color = '#fff';
+
+                x.insertCell(2);
+                tval.rows[i].cells[2].innerHTML = data['Countries'][i-1]['TotalDeaths'];
+                tval.rows[i].cells[2].style.background = '#f36e23';
+                tval.rows[i].cells[2].style.color = '#fff';
+
+                x.insertCell(3);
+                tval.rows[i].cells[3].innerHTML = data['Countries'][i-1]['TotalRecovered'];
+                tval.rows[i].cells[3].style.background = '#9cc850';
+                tval.rows[i].cells[3].style.color = '#fff';
+
+            }
+          }
+      
+      )
+
+  }
+
+</script>
+</html>
